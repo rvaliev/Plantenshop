@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="nl">
+
+
+<head>
+<title>JS PF taak: taalkeuze</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link rel="stylesheet" href="taalkeuze.css" media="all" />
+<script type="text/javascript" src="nuttig_lib.js"></script>
+<script type="text/javascript" src="taalkeuze.js"></script>
+<script type="text/javascript">
+ 
+var paginaTaal= "neutral";
+
+checkTaalKeuze();
+
+/*
+dit is een voorbeeld waar window.onload NIET gebruikt moet worden: er is geen enkele reden om te wachten op de DOM
+*/
+window.onload = function(){
+	
+	var killKnop 	= document.getElementById('killCookie');
+	var FRkeuze 	= document.getElementById('FR_choice');
+	var NLkeuze 	= document.getElementById('NL_choice');
+	var ENkeuze 	= document.getElementById('EN_choice');
+	
+	killKnop.onclick = function(){
+		clearCookie('taal');
+		}
+	FRkeuze.onclick = function(){
+		kiesTaal('FR');
+	}
+	NLkeuze.onclick = function(){
+		kiesTaal('NL');
+		}
+	ENkeuze.onclick = function(){
+		kiesTaal('EN');
+		}
+
+	}
+</script>
+</head>
+
+<body>
+<h1>JS PF taak: taalkeuze</h1>
+
+
+<h2>Opdracht:</h2>
+<ul>
+  <li>Maak een intropagina waar de gebruiker d.m.v. hyperlinks een definitieve taalkeuze kan maken: Nederlands, Français en English. Deze keuzes worden voorgesteld door icoontjes met begeleidende tekst.  Gebruik de meegeleverde vlaggetjes.</li>
+  <li> Door op deze ikonen te klikken wordt hij naar een welkomstpagina gebracht in de gekozen taal. Voorzie dus een pagina <code>English.html</code>,<code> Francais.html</code> en <code>Nederlands.html</code></li>
+  <li>Bij een volgende bezoek aan de site krijgt de gebruiker de intropagina niet meer te zien, maar komt direct op de taalpagina van zijn laatste keuze terecht. Maak hierbij uiteraard gebruik van <b>Cookies</b></li>
+  <li>Op elk van de taalpagina's is er echter een hyperlink voorzien die hem kan terugbrengen naar de intropagina zodat hij zijn taalkeuze kan wijzigen.</li>
+  <li>voorzie ook een knop/hyperlink "vernietig cookie" voor testing</li>
+</ul>
+
+
+<h2>Oplossing:</h2>
+<h3>Welkom, Bienvenue, Welcome</h3>
+<p>Kies uw taal, choissisez votre langue, Choose your language</p>
+<p><button id="killCookie">vernietig Cookie</button></p>
+<div id="lmenu">
+<a class="lChoice" id="FR_choice" lang="fr" href="#" title="Français">Français</a>
+<a class="lChoice" id="NL_choice" lang="nl" href="#" title="Nederlands">Nederlands</a>
+<a class="lChoice" id="EN_choice" lang="en" href="#" title="English" >English</a>
+</div>
+</body>
+</html>
+

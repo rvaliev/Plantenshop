@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>JS PF project: het Document Object Model</title>
+<style type="text/css" media="all">
+body{
+	font-family:Verdana, Geneva, sans-serif;
+	color:#333;
+	}
+img{
+	float:right;
+	}
+</style>
+
+</head>
+<body>
+<div id="container">
+  <h1 id="kop">Het Document Object Model</h1>
+  <!-- dit is HTML commentaar onzichtbaar in het beeld-->
+  <p id="beschrijving"><img src="../images/linda.jpg" alt="Linda, een front-end programmeur" />De meeste programmeurs <em>leven</em> op koffie</p>
+  <p>Veel programmeurs zijn liefhebbers van <a id="science" href="http://en.wikipedia.org/wiki/Science-fiction">science-fiction</a></p>
+  <div class="menu">
+    <h2>Onze programmeertalen</h2>
+    <ul>
+      <li>Javascript</li>
+      <li>PHP</li>
+      <li>ASP.Net</li>
+      <li>Java</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
+
+
+<script type="text/javascript">
+    window.onload = function () {
+
+        /* Change the title */
+        var eTitel = document.getElementById('kop'); // returns the whole element with that id
+        eTitel.innerHTML = "Hello world"; // change the content of selected tag
+
+
+        /* change text of the second list item */
+        var eBolletjes = document.getElementsByTagName('li'); // returns a set of nodes: [<li>​Javascript​</li>,<li>​PHP​</li>,<li>​ASP.Net​</li>,<li>​Java​</li>]
+        var nAantal = eBolletjes.length;
+        var e2deItem = eBolletjes[1]; // \<li>PHP</li>
+
+        e2deItem.removeChild(e2deItem.childNodes[0]); // <li></li>
+        var sTekst = document.createTextNode('C#');
+        e2deItem.appendChild(sTekst);
+
+//      e2deItem.innerHTML = "C#"; // This one line can replace above 3
+
+        /* Adding new item at the bottom of list */
+        var eLijst = document.getElementsByTagName('ul')[0]; // normally it would return a list of nodes (array), but in this case there's just one node
+        var eItem = document.createElement('li'); // create <li></li>
+        var sTekst2 = document.createTextNode('Perl');
+        eItem.appendChild(sTekst2); // put sTekst2 into eItem: <li>Perl</li>
+        eLijst.appendChild(eItem); // put <li>Perl</li> into ul
+
+
+        /* Attributen zetten en wijzigen */
+        var eImg = document.getElementsByTagName('img')[0];
+        eImg.src = "../images/elise.jpg"; // of eImg.setAttribute('src', '../images/elise.jpg');
+        eImg.setAttribute("alt", "Elise, system engineer"); // of eImg.alt = "Elise, system engineer";
+        eImg.setAttribute("title", "Elise, system engineer"); // of eImg.title = "Elise, system engineer";
+
+
+
+
+
+
+
+        /* TAKEN */
+        // 1)
+        var eBeschrijving = document.getElementById('beschrijving');
+        eBeschrijving.innerHTML = eBeschrijving.innerHTML + " en <em>chocolade</em>";
+
+
+        // 2)
+        var eContainer = document.getElementById('container');
+        var eFooter = document.createElement("div");
+        eFooter.id = "footer";
+        eFooter.innerHTML = "je vindt een job op de \<a href='#'>VDAB\</a> website";
+        eContainer.appendChild(eFooter);
+
+
+        // 3)
+        var eScience = document.getElementById('science');
+        eScience.setAttribute('href', 'https://www.google.be/#q=science+fiction');
+        eScience.setAttribute("target","_blank"); // open link in new tab
+
+
+        // 4)
+
+
+    }
+
+</script>

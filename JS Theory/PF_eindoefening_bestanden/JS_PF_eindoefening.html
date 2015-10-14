@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>JS PF Eindoefening</title>
+<link rel="stylesheet" href="JS_PF_eindoefening.css" />
+</head>
+<body>
+<div id="container">
+    <div id="featureDetection">
+        Zet uw JavaScript aan!
+    </div>
+
+  <div id="kop">
+    <h1>JS PF Eindoefening</h1>
+    <h2>Kervers.be, verse groenten webshop</h2>
+  </div>
+  <div id="midden">
+    <p>Bestel nu, geleverd binnen het uur!</p>
+    <h2>Bestelformulier</h2>
+    <form id="frmBestel" name="frmBestel" action="js_form_ontvanger.html" method="get">
+      <p>
+        <label for="winkel">kies winkel</label>
+        <select name="winkel" id="winkel">
+          <option value="">--- kies uw winkel ---</option>
+        </select>
+      </p>
+      <p>
+        <label for="groente">kies groente</label>
+        <select name="groente" id="groente">
+          <option  value="">--- maak uw keuze ---</option>
+        </select>
+      </p>
+
+        <p>
+            <label class="inline" for="aantal">aantal/gewicht</label>
+            <input type="text" class="number" name="aantal" id="aantal" />
+        </p>
+      <p>
+        <button type="submit" id="toevoegen">OK, gooi maar in mijn mandje</button>
+      </p>
+    </form>
+
+
+
+    <div id="winkelmandje">
+      <h2>Winkelmandje</h2>
+      <div class="item" id="leeg">mijn mandje is leeg
+      </div>
+        <table id="tg">
+
+        </table>
+
+      <div class="item" id="totaal"><div class='cel cellinks' id="totTekst">Totaal</div><div id="totNum" class='cel celrechts'>0</div></div>
+    </div>
+     
+  </div>
+  <!--<div id="voet">&copy;vdab</div>-->
+</div>
+
+<script src="scripts.js"></script>
+</body>
+</html>

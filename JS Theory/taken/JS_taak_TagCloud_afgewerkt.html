@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>JS PF taak: TagCloud</title>
+<style media="screen" type="text/css">
+<!--
+em {
+	font-style:normal;
+	font-weight:bold;
+	color:#906;
+}
+img {
+	float:left
+}
+h3 {
+	clear:both;
+}
+#tagContainer {
+	position:relative;
+	background-color:#CFF;
+	margin:1em;
+	padding:0;
+	width: 500px;
+	height:400px;
+	overflow:hidden;
+	border:2px solid silver;
+}
+span.tag {
+	position:absolute;
+	top:0;
+	left:0;
+}
+-->
+</style>
+</head>
+<script type="text/javascript">
+//het array met de tags
+//elk item is zelf een Array met de naam, het huidig aantal stemmen en het vorig aantal stemmen die het kreeg
+var arrTags = [
+				["Javascript", 1634, 987],
+				["jQuery", 1111, 34],
+				["PHP", 1024,1122],
+				["Asp.Net", 977, 1005],
+				["Photoshop", 594, 789],
+				["XML", 40, 666],
+				["Access", 55, 77],
+				["Java", 278, 277],
+				["MySQL", 155, 122],   
+			   ]
+
+</script>
+<script type="text/javascript">
+/*
+
+Opmerkingen voor de lesgever:
+
+we houden deze oefening zo eenvoudig mogelijk en leggen geen verdere verfijningen op, misschien wel in de advanced?
+
+AFLATEN (500 jaar, Bonifacius I) voor:
+	- positionering
+	- (een) direct algoritme lettergrootte
+	- produceren van de tags
+	- style toekennen via inline style (setAttribute("style",...
+
+NIET GEVRAAGD MAAR TOCH GEKREGEN? -> AFLATEN (6000 jaar, JULIUS II)
+	- niveau's voor lettergrootte
+	- hyperlinks in span
+	- style gedeeltelijk toekennen via class
+	- 
+
+font-size van de tags: 
+
+de lettergrootte bereken hangt wat af van het bereik van de telling: is het verschil tussen min stemmen en max stemmen erg groot dan werk je best met een schaal (niveaus, baremas), zoals ik hier gedaan heb.zie functie fontBase()
+Voor een directe koppeling aan de telling kan je het algoritme gebruiken dat voorgesteld wordt op Wikipedia "tag cloud"
+
+absolute positionering: door de random plaats zal dikwijls een deel van de term uit scherm verdwijnen. OK
+
+style toekennen: gebeurt best inline, dus door het "style" attribuut te schrijven. Kan natuurlijk ook door CSS classes te maken en ze toe te kennen: werd niet gevraagd maar OK. Position zal altijd inline moeten gebeuren
+
+
+*/
+var baseFontSize 		= 1; //em
+var baseFontColor 		= "#000";
+var tagContainerWidth 	= 500;//px
+var tagContainerHeight 	= 400;//px
+
+window.onload = function(){
+	
+	makeTags();
+	
+}
+
+//=================================
+function makeTags(){
+		/*
+	returns HTML string met SPAN element
+	@tagItem 	arrayItem bestaande uit tag en votes
+	*/
+	var tagContainer = document.getElementById('tagContainer');
+	if(tagContainer){
+		
+		for(var i=0;i<arrTags.length;i++){
+			tagContainer.appendChild(makeTag(arrTags[i]));
+		}
+	}
+}
+//=================================
+function makeTag(tagItem){
+	/*
+	returns SPAN element
+	@tagItem 	arrayItem bestaande uit tag en votes
+	*/
+	var tagNaam 	= tagItem[0]; //term //oppassen geen tagName voor IE!
+	var votesNu 	= tagItem[1]; //huidig aantal stemmen
+	var votesEerder = tagItem[2]; //vorig aantal stemmen
+
+	var styleRules 	= "";
+	//willekeurige positie in de box
+	var posLeft 	= Math.round(Math.random() * tagContainerWidth) + 0;		// integer tussen 0 en tagContainerWidth
+	var posTop 		= Math.round(Math.random() * tagContainerHeight) + 0;
+		
+	aidee 			= tagNaam.toLowerCase();
+	var tag			= document.createElement('span');
+	tag.className 	= "tag";
+	tag.id 			= aidee;
+	//style
+	styleRules  	+= "left:" + posLeft + "px;"; 	//hor pos
+	styleRules  	+= "top:" + posTop + "px;";		//ver pos
+	styleRules  	+= "font-size:" + fontbase(votesNu)+ "em;";	//fontsize
+	styleRules  	+= "color:" + kiesKleur(votesNu, votesEerder);	//kleur
+	
+	console.log("tagNaam: %s, posLeft: %s, posTop: %s, stylerules: %s, ",tagNaam, posLeft,posTop, styleRules);
+	
+	tag.setAttribute("style", styleRules);
+	var tekst 		= document.createTextNode(tagNaam);
+	tag.appendChild(tekst);
+	
+	return tag;
+	}
+//=================================
+function fontbase(votes){
+	/*
+	returnt een getal die zal gebruikt worden voor de fontsize van de tag
+	@votes	getal, verplicht
+	*/
+	//van groot naar klein
+	var arrCats	= [ [3200,6],[1600,5],[800,4],[400,3],[200,2],[100,1],[0,0.5]];
+	
+	var bf 		= baseFontSize;
+	var cat		= 0;
+	var over 	= 0;
+	//doorloop alle categoriën en bepaal de category
+	for(var i=0;i<arrCats.length;i++){
+		var barema 	= arrCats[i][0];
+		var niv 	= arrCats[i][1];
+		var helft 	= (barema==0)?0:barema/2;
+		
+		if(votes >= barema){
+			cat		= niv;
+			over 	= votes-barema;// hoeveel meer dan cat?
+			break;
+			}
+		}
+
+	fs = bf * cat  + over/helft; 
+	// basisfontsize * categorie + een extraatje, nl. de verhouding van het overschot tov het verschil met de volgende categorie
+	
+	return fs;
+	}
+	
+//=================================
+function kiesKleur(vn, ve){
+	/*
+	returnt een CSS kleurwaarde
+	@vn		getal, verplicht, huidge votes
+	@ve		getal, verplicht, vorige votes	
+
+	*/
+	var stijgKleur 	= "#C1FF64";
+	var daalKleur 	= "#FF64C1";
+	
+	var kleur =(vn>ve)?stijgKleur:daalKleur;
+	return kleur;
+}
+
+</script>
+<body>
+<h1>Javascript PF taak: eenvoudige Tag cloud</h1>
+<p><img src="350px-World_Population.png" alt="wereldbevolking per land" />Een <em>tag cloud</em> of <em>data cloud</em>,  is een visuele voorstelling van het belang van een term, meestal in een website. <br />
+  Het aantal keren dat die term voorkomt wordt dan voorgesteld door de lettergrootte en/of de kleur van het woord. Hiernaast zie je bijvoorbeeld een tag cloud die het aantal inwoners per land weergeeft</p>
+<h3>Opdracht: </h3>
+<ul>
+  <li>Bekijk de broncode. Dit bestand bevat een  Array <code>arrTags</code> . Maak er gebruik van om een eenvoudige <em>tag cloud</em> te produceren in het element <code>#tagContainer</code></li>
+  <li>maak voor elke term in het array een <code>span</code> element aan en positioneer dat <code>absolute</code> in de container.</li>
+  <li>Maak gebruik van <code>Math.random()</code> om een willekeurige plaats, zowel vertikaal als horizontaal, te genereren binnen de container.</li>
+  <li>bedenk zelf een algoritme die de lettergrootte berekend afhankelijk van het aantal stemmen die een term kreeg</li>
+  <li>kan je ook de kleur toekennen? groen voor stijgers, rood voor dalers</li>
+</ul>
+<h3>Geteste topics</h3>
+<ul>
+  <li>Arrays</li>
+  <li>style properties</li>
+  <li><code>Math.rand()</code> object</li>
+</ul>
+<div id="tagContainer"></div>
+</body>
+</html>
